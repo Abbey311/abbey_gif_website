@@ -5,13 +5,10 @@ const gifResults = document.querySelector("#gif-results");
 const apiKey = "ZzGHO6UA4jAo0fU6hInmEDLLEgejNi6k";
 // const limit;
 // const rating;
-gifForm.addEventListener("submit", getResults);
+gifForm.addEventListener("submit", handleFormSubmit);
 
-async function getResults(event) {
-    event.preventDefault();
-    const gifInput = event.target.Gif;
-    const gif = gifInput.value;
-    const apiUrl = "http://api.giphy.com/v1/gifs/search?api_key=" + apiKey + "&q=" + gif;
+async function getResults(search_term) {
+    const apiUrl = "http://api.giphy.com/v1/gifs/search?api_key=" + apiKey + "&q=" + search_term;
     //console.log(apiUrl);
 
     // 2. On form submit, go to the gif API 
@@ -29,3 +26,11 @@ async function getResults(event) {
       <img src="${element.images.original.url} "alt=${element.title}/>"
       `
   } 
+
+  function handleFormSubmit(event){
+      event.preventDefault();
+      const gifInput = event.target.Gif;
+      const gif = gifInput.value;
+      gifResults.innerHTML =` `;
+      getResults(gif);
+  }
