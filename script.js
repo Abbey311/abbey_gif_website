@@ -3,11 +3,13 @@ console.log("page loaded");
 const gifForm = document.querySelector("form");
 const gifResults = document.querySelector("#gif-results");
 const loadButton = document.querySelector(".hidden");
+const searchInput = document.getElementById('search-input');
 const apiKey = "ZzGHO6UA4jAo0fU6hInmEDLLEgejNi6k";
 const limit = 9;
 const rating = "g";
-let pages = 0;
-let offset = pages*limit;
+let currentPage = 0;
+let offset = currentPage*limit;
+var currentSearchTerm = '';
 
 gifForm.addEventListener("submit", handleFormSubmit);
 loadButton.addEventListener("click", showMore);
@@ -32,15 +34,19 @@ async function getResults(search_term) {
       `
   } 
 
-  function handleFormSubmit(event){
+  async function handleFormSubmit(event){
       event.preventDefault();
-      const gifInput = event.target.Gif;
-      const gif = gifInput.value;
       gifResults.innerHTML =` `;
-      getResults(gif);
+      currentSearchTerm = searchInput.value;
+      const results = await getResults(currentSearchTerm);
+      //displayResults(results);
+      searchInput.value = '';
+      currentPage++;
+      loadButton.classList.remove('hidden');
   }
 
-  function showMore(event){
-    getResults();
-    pages+=1;
+  async function showMore(event){
+    const results = await getResults(currentSearchTerm);  
+    //displayResults(results);
+    currentPage++;
   }
